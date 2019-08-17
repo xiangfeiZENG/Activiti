@@ -16,12 +16,13 @@ package org.activiti.engine.runtime;
 import java.util.Date;
 
 import org.activiti.engine.ManagementService;
+import org.activiti.engine.api.internal.Internal;
 
 /**
  * Represents one job (timer, async job, etc.).
- * 
-
+ *
  */
+@Internal
 public interface Job {
   
   String JOB_TYPE_TIMER = "timer";

@@ -5,13 +5,14 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.activiti.engine.ActivitiException;
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.runtime.ClockReader;
 
 /**
  * Resolves a due date taking into account the specified time zone.
- * 
-
+ *
  */
+@Internal
 public class AdvancedSchedulerResolverWithTimeZone implements AdvancedSchedulerResolver {
 
   @Override

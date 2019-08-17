@@ -14,10 +14,14 @@ package org.activiti.engine.impl.bpmn.behavior;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -32,6 +36,7 @@ import org.activiti.engine.impl.bpmn.helper.SkipExpressionUtil;
 import org.activiti.engine.impl.calendar.BusinessCalendar;
 import org.activiti.engine.impl.calendar.DueDateBusinessCalendar;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.cmd.CompleteTaskCmd;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.el.ExpressionManager;
 import org.activiti.engine.impl.interceptor.CommandContext;
@@ -41,8 +46,6 @@ import org.activiti.engine.impl.persistence.entity.TaskEntityManager;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
 
@@ -193,9 +196,12 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
         }
       }
     }
-    
+
+
     taskEntityManager.insert(task, (ExecutionEntity) execution);
-    
+
+    task.setVariablesLocal(calculateInputVariables(execution));
+
     boolean skipUserTask = false;
     if (StringUtils.isNotEmpty(activeTaskSkipExpression)) {
       Expression skipExpression = expressionManager.createExpression(activeTaskSkipExpression);
@@ -226,11 +232,30 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       taskEntityManager.deleteTask(task, null, false, false);
       leave(execution);
     }
-    
+
+  }
+
+  protected Map<String, Object> calculateInputVariables(DelegateExecution execution) {
+        CommandContext commandContext = Context.getCommandContext();
+        if (commandContext.getProcessEngineConfiguration().isCopyVariablesToLocalForTasks()) {
+          return execution.getVariables();
+        } else {
+          return Collections.emptyMap();
+        }
+  }
+  
+  protected Map<String, Object> calculateOutBoundVariables(DelegateExecution execution,
+                                                           Map<String, Object> taskVariables) {
+    CommandContext commandContext = Context.getCommandContext();
+      if(commandContext.getProcessEngineConfiguration().isCopyVariablesToLocalForTasks()){
+          return taskVariables;
+      }
+      return Collections.emptyMap();
   }
 
   public void trigger(DelegateExecution execution, String signalName, Object signalData) {
     CommandContext commandContext = Context.getCommandContext();
+    
     TaskEntityManager taskEntityManager = commandContext.getTaskEntityManager();
     List<TaskEntity> taskEntities = taskEntityManager.findTasksByExecutionId(execution.getId()); // Should be only one
     for (TaskEntity taskEntity : taskEntities) {
@@ -238,8 +263,30 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
         throw new ActivitiException("UserTask should not be signalled before complete");
       }
     }
-    
+
+    propagateVariablesToProcess(execution,
+                                commandContext);
+
     leave(execution);
+  }
+
+  private void propagateVariablesToProcess(DelegateExecution execution,
+                                           CommandContext commandContext) {
+    String processInstanceId = execution.getProcessInstanceId();
+    ExecutionEntity processInstanceEntity = processInstanceId != null ?
+            commandContext.getExecutionEntityManager().findById(processInstanceId) :
+            null;
+
+    if (processInstanceEntity != null) {
+      Map<String, Object> taskVariables = new HashMap<>();
+
+      if (commandContext.getCommand() instanceof CompleteTaskCmd) {
+        taskVariables = ((CompleteTaskCmd) commandContext.getCommand()).getTaskVariables();
+      }
+      Map<String, Object> outboundVariables = calculateOutBoundVariables(execution,
+                                                                         taskVariables);
+      processInstanceEntity.setVariables(outboundVariables);
+    }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

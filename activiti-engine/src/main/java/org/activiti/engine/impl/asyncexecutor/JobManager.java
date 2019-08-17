@@ -2,6 +2,7 @@ package org.activiti.engine.impl.asyncexecutor;
 
 import org.activiti.bpmn.model.TimerEventDefinition;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.persistence.entity.AbstractJobEntity;
 import org.activiti.engine.impl.persistence.entity.DeadLetterJobEntity;
@@ -14,10 +15,8 @@ import org.activiti.engine.runtime.Job;
 /**
  * Contains methods that are not tied to any specific job type (async, timer, suspended or deadletter),
  * but which are generally applicable or are about going from one type to another.
- * 
-
-
  */
+@Internal
 public interface JobManager {
   
   /**

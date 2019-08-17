@@ -27,14 +27,13 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.impl.util.TimeZoneUtil;
 import org.activiti.engine.runtime.ClockReader;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
 
-/**
- * helper class for parsing ISO8601 duration format (also recurring) and computing next timer date
- */
+@Internal
 public class DurationHelper {
 
     private Calendar start;

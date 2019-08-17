@@ -1,12 +1,14 @@
 package org.activiti.spring.boot.tasks;
 
-import org.activiti.runtime.api.TaskAdminRuntime;
-import org.activiti.runtime.api.TaskRuntime;
-import org.activiti.runtime.api.model.Task;
-import org.activiti.runtime.api.model.builders.TaskPayloadBuilder;
-import org.activiti.runtime.api.query.Page;
-import org.activiti.runtime.api.query.Pageable;
-import org.activiti.runtime.api.security.SecurityManager;
+import org.activiti.api.runtime.shared.query.Page;
+import org.activiti.api.runtime.shared.query.Pageable;
+import org.activiti.api.task.model.Task;
+import org.activiti.api.task.model.builders.TaskPayloadBuilder;
+import org.activiti.api.task.runtime.TaskAdminRuntime;
+import org.activiti.api.task.runtime.TaskRuntime;
+import org.activiti.spring.boot.security.util.SecurityUtil;
+import org.activiti.spring.boot.test.util.TaskCleanUpUtil;
+import org.junit.After;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ContextConfiguration
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TaskRuntimeTaskForOtherTest {
 
     @Autowired
@@ -31,9 +31,21 @@ public class TaskRuntimeTaskForOtherTest {
     @Autowired
     private TaskAdminRuntime taskAdminRuntime;
 
+    @Autowired
+    private SecurityUtil securityUtil;
+
+    @Autowired
+    private TaskCleanUpUtil taskCleanUpUtil;
+
+    @After
+    public void taskCleanUp(){
+        taskCleanUpUtil.cleanUpWithAdmin();
+    }
+
     @Test
-    @WithUserDetails(value = "garth", userDetailsServiceBeanName = "myUserDetailsService")
-    public void aCreateStandaloneTaskWithNoCandidates() {
+    public void createStandaloneTaskWithNoCandidates() {
+
+        securityUtil.logInAs("garth");
 
         Task standAloneTask = taskRuntime.create(TaskPayloadBuilder.create()
                 .withName("task with no candidates besides owner")
@@ -41,42 +53,21 @@ public class TaskRuntimeTaskForOtherTest {
 
         // the owner should be able to see the created task
         Page<Task> tasks = taskRuntime.tasks(Pageable.of(0,
-                50));
+                                                         50));
 
         assertThat(tasks.getContent()).hasSize(1);
         Task task = tasks.getContent().get(0);
 
         assertThat(task.getAssignee()).isNull();
         assertThat(task.getStatus()).isEqualTo(Task.TaskStatus.CREATED);
-    }
 
-    @Test
-    @WithUserDetails(value = "salaboy", userDetailsServiceBeanName = "myUserDetailsService")
-    public void bCheckThatTaskIsNotVisibleForNonCandidateUsers() {
-
+        securityUtil.logInAs("user");
         // Other users beside the owner shouldn't see the task
-        Page<Task> tasks = taskRuntime.tasks(Pageable.of(0,
+        tasks = taskRuntime.tasks(Pageable.of(0,
                 50));
 
         assertThat(tasks.getContent()).hasSize(0);
-
     }
-
-
-    @Test
-    @WithUserDetails(value = "admin", userDetailsServiceBeanName = "myUserDetailsService")
-    public void cCleanUpWithAdmin() {
-        Page<Task> tasks = taskAdminRuntime.tasks(Pageable.of(0, 50));
-        for (Task t : tasks.getContent()) {
-            taskAdminRuntime.delete(TaskPayloadBuilder
-                    .delete()
-                    .withTaskId(t.getId())
-                    .withReason("test clean up")
-                    .build());
-        }
-
-    }
-
 
 
 }

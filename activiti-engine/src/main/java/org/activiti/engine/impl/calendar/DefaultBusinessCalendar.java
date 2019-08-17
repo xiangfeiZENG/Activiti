@@ -19,11 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.impl.context.Context;
 
-/**
-
- */
+@Internal
 public class DefaultBusinessCalendar implements BusinessCalendar {
 
   private static Map<String, Integer> units = new HashMap<String, Integer>();

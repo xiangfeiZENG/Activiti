@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.Model;
@@ -32,13 +33,9 @@ import org.activiti.validation.ValidationError;
 
 /**
  * Service providing access to the repository of process definitions and deployments.
- * 
-
-
-
-
-
+ *
  */
+@Internal
 public interface RepositoryService {
 
   /** Starts creating a new deployment */
@@ -287,11 +284,7 @@ public interface RepositoryService {
    */
   ProcessDefinition getProcessDefinition(String processDefinitionId);
   
-  /**
-   * Checks if the process definition should be executed by the Activiti 5 engine.
-   */
-  Boolean isActiviti5ProcessDefinition(String processDefinitionId);
-  
+
   /**
    * Checks if the process definition is suspended.
    */

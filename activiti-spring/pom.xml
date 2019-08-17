@@ -4,19 +4,32 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.activiti</groupId>
-    <artifactId>activiti-root</artifactId>
-    <version>7.0.0-SNAPSHOT</version>
+    <artifactId>activiti-core-dependencies</artifactId>
+    <version>7.1.0-SNAPSHOT</version>
+    <relativePath>../activiti-core-dependencies</relativePath>
   </parent>
   <artifactId>activiti-spring</artifactId>
   <name>Activiti :: Spring</name>
   <dependencies>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-engine</artifactId>
+      <artifactId>activiti-bpmn-converter</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-common-runtime-api</artifactId>
+      <artifactId>activiti-bpmn-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-process-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti.api</groupId>
+      <artifactId>activiti-api-runtime-shared</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -62,7 +75,12 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
+      <artifactId>groovy</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-jsr223</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,6 +120,11 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <profiles>

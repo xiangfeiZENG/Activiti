@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.compatibility.Activiti5CompatibilityHandler;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
@@ -26,7 +25,6 @@ import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.data.DataManager;
 import org.activiti.engine.impl.persistence.entity.data.TaskDataManager;
-import org.activiti.engine.impl.util.Activiti5Util;
 import org.activiti.engine.task.IdentityLinkType;
 import org.activiti.engine.task.Task;
 
@@ -124,7 +122,7 @@ public class TaskEntityManagerImpl extends AbstractEntityManager<TaskEntity> imp
       if (taskEntity.getId() != null) {
         getHistoryManager().recordTaskAssigneeChange(taskEntity.getId(), taskEntity.getAssignee());
         addAssigneeIdentityLinks(taskEntity);
-        update(taskEntity);
+        update(taskEntity, fireEvents);
       }
     }
   }
@@ -220,12 +218,14 @@ public class TaskEntityManagerImpl extends AbstractEntityManager<TaskEntity> imp
     	  if (cancel && !task.isCanceled()) {
     		  task.setCanceled(true);
           getEventDispatcher().dispatchEvent(
-                  ActivitiEventBuilder.createActivityCancelledEvent(task.getExecution() != null ? task.getExecution().getActivityId() : null, 
-                      task.getName(), task.getExecutionId(), 
-                      task.getProcessInstanceId(),
-                      task.getProcessDefinitionId(), 
-                      "userTask", 
-                      deleteReason));
+                  ActivitiEventBuilder.createActivityCancelledEvent(task.getExecution() != null ? task.getExecution().getActivityId() : null,
+                                                                    task.getName(),
+                                                                    //temporary fix for standalone tasks
+                                                                    task.getExecutionId() != null ? task.getExecutionId() : task.getId(),
+                                                                    task.getProcessInstanceId(),
+                                                                    task.getProcessDefinitionId(),
+                                                                    "userTask",
+                                                                    deleteReason));
         }
         getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_DELETED, task));
       }
@@ -292,12 +292,6 @@ public class TaskEntityManagerImpl extends AbstractEntityManager<TaskEntity> imp
     if (task != null) {
       if (task.getExecutionId() != null) {
         throw new ActivitiException("The task cannot be deleted because is part of a running process");
-      }
-
-      if (Activiti5Util.isActiviti5ProcessDefinitionId(getCommandContext(), task.getProcessDefinitionId())) {
-        Activiti5CompatibilityHandler activiti5CompatibilityHandler = Activiti5Util.getActiviti5CompatibilityHandler();
-        activiti5CompatibilityHandler.deleteTask(taskId, deleteReason, cascade);
-        return;
       }
 
       deleteTask(task, deleteReason, cascade, cancel);

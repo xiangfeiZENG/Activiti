@@ -1,14 +1,16 @@
 package org.activiti.engine.impl.calendar;
 
+import java.util.Date;
+
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.runtime.ClockReader;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
 
-import java.util.Date;
-
 /**
  * This class implements business calendar based on internal clock
  */
+@Internal
 public abstract class BusinessCalendarImpl implements BusinessCalendar {
 
   protected ClockReader clockReader;

@@ -16,6 +16,8 @@ package org.activiti.engine.test;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.activiti.engine.api.internal.Internal;
+
 /**
  * Annotation for a test method to create and delete a deployment around a test method.
  * 
@@ -46,10 +48,9 @@ import java.lang.annotation.RetentionPolicy;
  *   }
  * </pre>
  * 
-
-
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Internal
 public @interface Deployment {
 
   /** Specify resources that make up the process definition. */

@@ -15,14 +15,13 @@ package org.activiti.engine.runtime;
 
 import java.util.Date;
 
+import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.query.Query;
 
 /**
  * Allows programmatic querying of {@link Job}s.
- * 
-
-
  */
+@Internal
 public interface DeadLetterJobQuery extends Query<DeadLetterJobQuery, Job> {
 
   /** Only select jobs with the given id */

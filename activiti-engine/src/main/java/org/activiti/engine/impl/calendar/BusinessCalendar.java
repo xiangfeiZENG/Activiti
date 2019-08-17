@@ -14,9 +14,9 @@ package org.activiti.engine.impl.calendar;
 
 import java.util.Date;
 
-/**
+import org.activiti.engine.api.internal.Internal;
 
- */
+@Internal
 public interface BusinessCalendar {
 
   Date resolveDuedate(String duedateDescription);

@@ -13,9 +13,9 @@
 package org.activiti.engine.impl.cfg.multitenant;
 
 import java.util.concurrent.ExecutorService;
-
 import javax.sql.DataSource;
 
+import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.impl.asyncexecutor.AsyncExecutor;
@@ -27,7 +27,6 @@ import org.activiti.engine.impl.db.DbIdGenerator;
 import org.activiti.engine.impl.interceptor.CommandInterceptor;
 import org.activiti.engine.impl.persistence.StrongUuidGenerator;
 import org.activiti.engine.repository.DeploymentBuilder;
-import org.activiti.runtime.api.identity.UserGroupManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,9 +54,10 @@ import org.slf4j.LoggerFactory;
  *   The {@link AsyncExecutor} needs to be injected using the {@link #setAsyncExecutor(AsyncExecutor)} method on this class.    
  * 
  * databasetype
- * 
-
+ *
+ *  @deprecated multi-tenant code will be removed in future version of Activiti and Activiti Cloud
  */
+@Deprecated
 public class MultiSchemaMultiTenantProcessEngineConfiguration extends ProcessEngineConfigurationImpl {
   
   private static final Logger logger = LoggerFactory.getLogger(MultiSchemaMultiTenantProcessEngineConfiguration.class);

@@ -21,3 +21,9 @@ target
 
 .factorypath
 .springBeans
+
+# Updatebot
+.updatebot-repos
+.updatebot-repos/**
+
+*.versionsBackup

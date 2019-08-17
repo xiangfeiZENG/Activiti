@@ -13,9 +13,12 @@
 
 package org.activiti.engine.runtime;
 
+import org.activiti.engine.api.internal.Internal;
+
 /*
  * Represents a modeled DataObject.
  */
+@Internal
 public interface DataObject {
   
   /**

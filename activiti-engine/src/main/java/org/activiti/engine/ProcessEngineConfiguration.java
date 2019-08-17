@@ -12,6 +12,12 @@
  */
 package org.activiti.engine;
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import javax.sql.DataSource;
+
+import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.cfg.MailServerInfo;
 import org.activiti.engine.impl.asyncexecutor.AsyncExecutor;
 import org.activiti.engine.impl.cfg.BeansConfigurationHelper;
@@ -21,12 +27,6 @@ import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.engine.impl.persistence.entity.integration.IntegrationContextManager;
 import org.activiti.engine.integration.IntegrationContextService;
 import org.activiti.engine.runtime.Clock;
-import org.activiti.runtime.api.identity.UserGroupManager;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Configuration information from which a process engine can be build.
@@ -200,6 +200,8 @@ public abstract class ProcessEngineConfiguration {
 
   protected boolean enableProcessDefinitionInfoCache = false;
   protected ActivitiEngineAgendaFactory engineAgendaFactory;
+
+  protected boolean copyVariablesToLocalForTasks = false;
 
   /** use one of the static createXxxx methods instead */
   protected ProcessEngineConfiguration() {
@@ -740,6 +742,15 @@ public abstract class ProcessEngineConfiguration {
   public ProcessEngineConfiguration setEnableProcessDefinitionInfoCache(boolean enableProcessDefinitionInfoCache) {
     this.enableProcessDefinitionInfoCache = enableProcessDefinitionInfoCache;
     return this;
+  }
+
+  public ProcessEngineConfiguration setCopyVariablesToLocalForTasks(boolean copyVariablesToLocalForTasks) {
+    this.copyVariablesToLocalForTasks = copyVariablesToLocalForTasks;
+    return this;
+  }
+
+  public boolean isCopyVariablesToLocalForTasks(){
+    return copyVariablesToLocalForTasks;
   }
 
   public void setEngineAgendaFactory(ActivitiEngineAgendaFactory engineAgendaFactory) {

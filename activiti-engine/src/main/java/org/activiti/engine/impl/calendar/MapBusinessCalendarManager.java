@@ -16,10 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.activiti.engine.ActivitiException;
+import org.activiti.engine.api.internal.Internal;
 
-/**
-
- */
+@Internal
 public class MapBusinessCalendarManager implements BusinessCalendarManager {
 
   private final Map<String, BusinessCalendar> businessCalendars;

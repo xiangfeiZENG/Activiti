@@ -15,16 +15,17 @@ package org.activiti.spring.boot;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.activiti.engine.impl.history.HistoryLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 @ConfigurationProperties("spring.activiti")
 public class ActivitiProperties {
 
   private boolean checkProcessDefinitions = true;
-  private boolean asyncExecutorActivate = false;
-  private String deploymentName;
+  private boolean asyncExecutorActivate = true;
+  private String deploymentName = "SpringAutoDeployment";
   private String mailServerHost = "localhost";
   private int mailServerPort = 1025;
   private String mailServerUserName;
@@ -34,13 +35,17 @@ public class ActivitiProperties {
   private boolean mailServerUseTls;
   private String databaseSchemaUpdate = "true";
   private String databaseSchema;
-  private boolean isDbHistoryUsed = false;
+  private boolean dbHistoryUsed = false;
   private HistoryLevel historyLevel = HistoryLevel.NONE;
-  private String processDefinitionLocationPrefix = "classpath:/processes/";
+  private String processDefinitionLocationPrefix = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "**/processes/";
   private List<String> processDefinitionLocationSuffixes = Arrays.asList("**.bpmn20.xml", "**.bpmn");
   private List<String> customMybatisMappers;
   private List<String> customMybatisXMLMappers;
   private boolean useStrongUuids = true;
+  private boolean copyVariablesToLocalForTasks = true;
+  private String deploymentMode = "default";
+  private boolean serializePOJOsInVariablesToJson = true;
+  private String javaClassFieldForJackson = JsonTypeInfo.Id.CLASS.getDefaultPropertyName();
 
   public boolean isAsyncExecutorActivate() {
     return asyncExecutorActivate;
@@ -83,11 +88,11 @@ public class ActivitiProperties {
   }
 
   public boolean isDbHistoryUsed() {
-    return isDbHistoryUsed;
+    return dbHistoryUsed;
   }
 
   public void setDbHistoryUsed(boolean isDbHistoryUsed) {
-    this.isDbHistoryUsed = isDbHistoryUsed;
+    this.dbHistoryUsed = isDbHistoryUsed;
   }
 
   public HistoryLevel getHistoryLevel() {
@@ -195,5 +200,36 @@ public class ActivitiProperties {
   public void setUseStrongUuids(boolean useStrongUuids) {
 	this.useStrongUuids = useStrongUuids;
   }
-  
+
+    public boolean isCopyVariablesToLocalForTasks() {
+        return copyVariablesToLocalForTasks;
+    }
+
+    public void setCopyVariablesToLocalForTasks(boolean copyVariablesToLocalForTasks) {
+        this.copyVariablesToLocalForTasks = copyVariablesToLocalForTasks;
+    }
+
+    public String getDeploymentMode() {
+        return deploymentMode;
+    }
+
+    public void setDeploymentMode(String deploymentMode) {
+        this.deploymentMode = deploymentMode;
+    }
+
+    public boolean isSerializePOJOsInVariablesToJson() {
+        return serializePOJOsInVariablesToJson;
+    }
+
+    public void setSerializePOJOsInVariablesToJson(boolean serializePOJOsInVariablesToJson) {
+        this.serializePOJOsInVariablesToJson = serializePOJOsInVariablesToJson;
+    }
+
+    public String getJavaClassFieldForJackson() {
+        return javaClassFieldForJackson;
+    }
+
+    public void setJavaClassFieldForJackson(String javaClassFieldForJackson) {
+        this.javaClassFieldForJackson = javaClassFieldForJackson;
+    }
 }
