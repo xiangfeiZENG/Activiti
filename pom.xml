@@ -27,7 +27,7 @@
 
 		<!-- OSGi bundles properties -->
 		<activiti.artifact />
-		<activiti.osgi.import.activiti.version>version="[$(version;==;${activiti.osgi.version.clean}),$(version;=+;${activiti.osgi.version.clean}))"</activiti.osgi.import.activiti.version>
+		<activiti.osgi.import.project.version>version="[$(version;==;${activiti.osgi.version.clean}),$(version;=+;${activiti.osgi.version.clean}))"</activiti.osgi.import.project.version>
 		<activiti.osgi.import.strict.version>version="[$(version;===;${activiti.osgi.version.clean}),$(version;==+;${activiti.osgi.version.clean}))"</activiti.osgi.import.strict.version>
 		<activiti.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</activiti.osgi.import.default.version>
 		<activiti.osgi.import.defaults>
@@ -36,7 +36,7 @@
 		<activiti.osgi.import.additional />
 		<activiti.osgi.export.additional />
 		<activiti.osgi.import.pkg>
-			org.activiti.*;${activiti.osgi.import.activiti.version},
+			org.activiti.*;${activiti.osgi.import.project.version},
 			${activiti.osgi.import.before.defaults},
 			${activiti.osgi.import.defaults},
 			${activiti.osgi.import.additional},
@@ -52,7 +52,7 @@
 			${activiti.osgi.export.additional}
 		</activiti.osgi.export.pkg>
 		<activiti.osgi.private.pkg></activiti.osgi.private.pkg>
-		<activiti.osgi.version>version=${activiti.version}</activiti.osgi.version>
+		<activiti.osgi.version>version=${project.version}</activiti.osgi.version>
 		<activiti.osgi.split.pkg>-split-package:=first</activiti.osgi.split.pkg>
 		<activiti.osgi.import>${activiti.osgi.import.pkg}</activiti.osgi.import>
 		<activiti.osgi.dynamic />
@@ -61,9 +61,7 @@
 		<activiti.osgi.remove.headers>Ignore-Package,Include-Resource,Private-Package,Bundle-DocURL</activiti.osgi.remove.headers>
 		<activiti.osgi.include.resource>{maven-resources}</activiti.osgi.include.resource>
 		<activiti.osgi.embed></activiti.osgi.embed>
-
-		<!-- Libraries versions -->
-		<activiti.version>6.0.0</activiti.version>
+		
 	</properties>
 
 	<dependencyManagement>
@@ -204,7 +202,7 @@
             <dependency>
                 <groupId>org.activiti</groupId>
                 <artifactId>activiti-secure-tasks</artifactId>
-                <version>${activiti.version}</version>
+                <version>${project.version}</version>
             </dependency>
 			<dependency>
 				<groupId>com.ibm.db2.jcc</groupId>
@@ -215,173 +213,173 @@
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-engine</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-spring</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-bpmn-model</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-bpmn-converter</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-json-converter</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-explorer</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-simple-workflow</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-common-rest</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-rest</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-api</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-engine</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-model</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-xml-converter</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-json-converter</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-rest</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-dmn-engine-configurator</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-form-model</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-form-api</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-form-json-converter</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-form-engine</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-form-engine-configurator</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-camel</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-mule</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-crystalball</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-webapp-rest2</artifactId>
 				<type>war</type>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-cxf</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-bpmn-layout</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-process-validation</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-image-generator</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti5-engine</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti5-spring</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti5-compatibility</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti5-spring-compatibility</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.activiti</groupId>
 				<artifactId>activiti-jmx</artifactId>
-				<version>${activiti.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<!-- EMAIL -->
 			<dependency>
@@ -771,7 +769,7 @@
 						<DynamicImport-Package>${activiti.osgi.dynamic}</DynamicImport-Package>
 						<Private-Package>${activiti.osgi.private.pkg}</Private-Package>
 						<Implementation-Title>Activiti</Implementation-Title>
-						<Implementation-Version>${activiti.version}</Implementation-Version>
+						<Implementation-Version>${project.version}</Implementation-Version>
 						<Include-Resource>${activiti.osgi.include.resource}</Include-Resource>
 						<_versionpolicy>${activiti.osgi.import.default.version}</_versionpolicy>
 						<_removeheaders>${activiti.osgi.remove.headers}</_removeheaders>
@@ -781,7 +779,7 @@
 						<Embed-Dependency>${activiti.osgi.embed}</Embed-Dependency>
 					</instructions>
 					<versions>
-						<activiti.osgi.version.clean>${activiti.version}</activiti.osgi.version.clean>
+						<activiti.osgi.version.clean>${project.version}</activiti.osgi.version.clean>
 					</versions>
 				</configuration>
 			</plugin>

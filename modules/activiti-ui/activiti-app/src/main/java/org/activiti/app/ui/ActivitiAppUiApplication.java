@@ -6,14 +6,18 @@ import org.activiti.app.servlet.AppDispatcherServletConfiguration;
 import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
 
 /**
  * Spring Boot 启动类
@@ -22,11 +26,11 @@ import org.springframework.web.servlet.DispatcherServlet;
  * @since 2019-08-17
  */
 @SpringBootApplication(exclude = {
-        HibernateJpaAutoConfiguration.class,
+//        HibernateJpaAutoConfiguration.class,
         SecurityAutoConfiguration.class
 })
 @Import({ApplicationConfiguration.class})
-public class ActivitiAppUiApplication extends SpringBootServletInitializer{
+public class ActivitiAppUiApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(ActivitiAppUiApplication.class);
@@ -34,7 +38,7 @@ public class ActivitiAppUiApplication extends SpringBootServletInitializer{
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(ActivitiAppUiApplication.class.getName());
+        return builder.sources(ActivitiAppUiApplication.class);
     }
 
     @Bean
@@ -70,6 +74,18 @@ public class ActivitiAppUiApplication extends SpringBootServletInitializer{
 
         return registrationBean;
     }
+
+    @Bean
+    public FilterRegistrationBean openEntityManagerInViewFilter() {
+        FilterRegistrationBean bean = new FilterRegistrationBean(new OpenEntityManagerInViewFilter());
+        bean.addUrlPatterns("/*");
+        bean.setName("openEntityManagerInViewFilter");
+        bean.setOrder(-200);
+        bean.setDispatcherTypes(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC));
+        return bean;
+    }
+
+
 
 
 

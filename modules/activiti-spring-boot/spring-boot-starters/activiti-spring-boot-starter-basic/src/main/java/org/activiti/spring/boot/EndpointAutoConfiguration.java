@@ -26,9 +26,10 @@ import org.springframework.context.annotation.Configuration;
  * as required.
  *
  * @author Josh Long
+ * @author Ference Zeng
  */
 @Configuration
-@ConditionalOnClass (name = "org.springframework.boot.actuate.endpoint.AbstractEndpoint")
+//@ConditionalOnClass (name = "org.springframework.boot.actuate.endpoint.AbstractEndpoint")
 public class EndpointAutoConfiguration {
 
     @Bean
