@@ -22,7 +22,7 @@ import java.util.EnumSet;
 /**
  * Spring Boot 启动类
  *
- * @author <a href="mailto:ference.zeng@gmail.com">Ference Zeng</a>
+ * @author <a href="mailto:ferenc.zeng@gmail.com">Ferenc Zeng</a>
  * @since 2019-08-17
  */
 @SpringBootApplication(exclude = {
